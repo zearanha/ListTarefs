@@ -18,7 +18,7 @@ mongoose
     console.log("banco de dados conectado");
   })
   .catch(() => {
-    console.log("deu ruim");
+    console.log("deu ruim ");
   });
 
 app.use('/listTarefs', mongoRoutes);

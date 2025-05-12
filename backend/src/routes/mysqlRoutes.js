@@ -43,7 +43,7 @@ router.put("/addUser/:id", async (req, res) => {
         password: hashPassword,
       },
     });
-    res.status(204).json({ message: "Usuario atualizado" });
+    res.status(204).json({ message: "Usuario atualizado " });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

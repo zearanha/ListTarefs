@@ -51,7 +51,7 @@ router.delete('/listTarefs/:id', async (req, res) => {
         if(!deleteList){
             return res.status(404).json({ message: 'Tarefa não encontrada' })
         }
-        return res.status(200).json({ message: 'Tarefa deletada com sucesso' })
+        return res.status(200).json({ message: 'Tarefa deletada com sucesso ' })
     }
     catch(err){
         return res.status(400).json({ message: err.message })

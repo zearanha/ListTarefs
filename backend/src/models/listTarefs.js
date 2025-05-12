@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const listSchema = new mongoose.Schema({
     tarefa:{
         type: String,
-        required: true
+        required: true,
     },
     timing:{
         type: String,
-        required: true
+        required: true,
     }
 })
 
