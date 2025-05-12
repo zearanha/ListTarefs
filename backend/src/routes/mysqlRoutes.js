@@ -3,15 +3,14 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
+const router = express.Router();
 
-const app = express();
-app.use(express.json());
-
-app.get("/adduser", (req, res) => {
-  res.status(200).json({ message: "Conectado" });
+router.get("/adduser",async (req, res) => {
+  const users = await prisma.user.findMany();
+  res.status(200).json({users})
 });
 
-app.post("/addUser", async (req, res) => {
+router.post("/addUser", async (req, res) => {
   try {
     const { email, name, password } = req.body;
     const hashPassword = await bcrypt.hash(password, 10);
@@ -29,7 +28,7 @@ app.post("/addUser", async (req, res) => {
   }
 });
 
-app.put("/addUser/:id", async (req, res) => {
+router.put("/addUser/:id", async (req, res) => {
   try {
     const { email, name, password } = req.body;
     const hashPassword = await bcrypt.hash(password, 10);
@@ -50,7 +49,7 @@ app.put("/addUser/:id", async (req, res) => {
   }
 });
 
-app.delete("/addUser/:id", async (req, res) => {
+router.delete("/addUser/:id", async (req, res) => {
   try {
     await prisma.user.delete({
       where: {
@@ -63,6 +62,5 @@ app.delete("/addUser/:id", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Conectado");
-});
+
+export default router
