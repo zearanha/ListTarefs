@@ -13,7 +13,6 @@ const app = express();
 const prisma = new PrismaClient();
 
 app.use(express.json());
-console.log(process.env.MONGO_URI)
 
 mongoose
   .connect(
@@ -31,5 +30,5 @@ app.use('/addUser', prismaRoutes);
 
 
 app.listen(port, () => {
-    console.log('Servidor rodando na porta 3000');
+    console.log(`Servidor rondando na porta ${process.env.PORT}`);
 })
