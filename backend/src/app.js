@@ -25,8 +25,8 @@ mongoose
     console.log("deu ruim ");
   });
 
-app.use('/listTarefs', mongoRoutes);
-app.use('/addUser', prismaRoutes);
+app.use('/ltf', mongoRoutes);
+app.use('/adU', prismaRoutes);
 
 
 app.listen(port, () => {
