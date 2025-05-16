@@ -1,5 +1,5 @@
 'use client'
-
+import Button from '../components/button'
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
         <p className="font-medium text-xl mb-8">
           Organize as suas tarefas aqui, e tenha um dia mais organizado
         </p>
-        <button type="button" onClick={() => router.push('/user')} className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold py-2 px-4 rounded-4xl transform active:scale-90 transition-transform duration-300 cursor-pointer mb-4">Entrar</button>
+        <Button type="button" onClick={() => router.push('/user')} className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold py-2 px-4 rounded-4xl transform active:scale-90 transition-transform duration-300 cursor-pointer mb-4">Entrar</Button>
 
         <button type="button" onClick={() => router.push('/createUser')} className="cursor-pointer bg-gray-300 hover:bg-gray-400 active:bg-gray-500 py-2 px-4 rounded-4xl transform active:scale-90 transition-transform duration-300">Cadastre-se</button>
         

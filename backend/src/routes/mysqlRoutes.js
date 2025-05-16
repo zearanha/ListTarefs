@@ -10,7 +10,7 @@ router.get("/adduser", async (req, res) => {
   res.status(200).json({ users });
 });
 
-router.post("/User", async (req, res) => {
+router.post("/user", async (req, res) => {
   try {
     const { email, name, password } = req.body;
     const hashPassword = await bcrypt.hash(password, 10);
@@ -28,7 +28,7 @@ router.post("/User", async (req, res) => {
   }
 });
 
-router.post("/Login", async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const { email, name, password } = req.body;
 

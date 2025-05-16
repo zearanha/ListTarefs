@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { PrismaClient } from "@prisma/client";
 import dotenv from 'dotenv'
+import cors from 'cors'
 
 import mongoRoutes from "./routes/mongoRoutes.js";
 import prismaRoutes from "./routes/mysqlRoutes.js";
@@ -12,6 +13,7 @@ var port = process.env.PORT;
 const app = express();
 const prisma = new PrismaClient();
 
+app.use(cors())
 app.use(express.json());
 
 mongoose
@@ -30,5 +32,5 @@ app.use('/adU', prismaRoutes);
 
 
 app.listen(port, () => {
-    console.log(`Servidor rondando na porta ${process.env.PORT}`);
+    console.log(`Servidor rondando na porta ${process.env.PORT}`); //3002
 })
