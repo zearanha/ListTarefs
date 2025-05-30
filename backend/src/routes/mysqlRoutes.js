@@ -1,7 +1,10 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
+import jwt from 'jsonwebtoken'
+import { use } from "react";
 
+const SECRET_KEY = process.env.JWT_SECRET || 'Sua_chave_secreta_muito_segura';
 const prisma = new PrismaClient();
 const router = express.Router();
 
@@ -9,6 +12,18 @@ router.get("/adduser", async (req, res) => {
   const users = await prisma.user.findMany();
   res.status(200).json({ users });
 });
+
+router.get("/adduser/:id", async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: Number(req.params.id),
+      }
+    })
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
 
 router.post("/user", async (req, res) => {
   try {
@@ -41,11 +56,17 @@ router.post("/login", async (req, res) => {
     if (!user)
       return res.status(401).json({ message: "Usuario não encontrado" });
 
-    const isname = user.name === name;
-    const isPassword = await bcrypt.compare(password, user.password);
+    const isnameValid = user.name === name;
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if (isname && isPassword) {
-      return res.status(200).json({ message: "Login efetuado com sucesso", data: user });
+    if (isnameValid && isPasswordValid) {
+      
+      const token = jwt.sign(
+        {userId: user.id, email: user.email}, SECRET_KEY, { expiresIn: '1h'}
+      );
+      const { password: _, ...userWithoutPassword } = user;
+
+      return res.status(200).json({ message: "Login efetuado com sucesso", token, user: userWithoutPassword, data: user });
     } else {
       return res.status(401).json({ message: "Informações incorretas" });
     }
