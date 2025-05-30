@@ -24,7 +24,8 @@ export default function User(){
             return;
         }
         try{
-            await api.post('/adU/login', {email, name, password});
+            const response = await api.post('/adU/login', {email, name, password});
+            localStorage.setItem('token', response.data.token);
             setSuccess('Login successful');
             setEmail('');
             setName('');
