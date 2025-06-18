@@ -31,7 +31,8 @@ export default function CreateUser(){
             const response = await api.post('/adU/user', {
                 name: inputNameRef.current?.value,
                 email: inputEmailRef.current?.value,
-                password: inputPasswordRef.current?.value
+                password: inputPasswordRef.current?.value,
+                type: "USER"
             })
             
             if(response.status === 201){
