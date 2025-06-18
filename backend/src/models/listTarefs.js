@@ -5,8 +5,16 @@ const listSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    timing:{
-        type: String,
+    dataInicio: {
+        type: Date,
+        required: true,
+    },
+    dataFim: {
+        type: Date,
+        required: true,
+    },
+    userId: {
+        type: Number,
         required: true,
     }
 })

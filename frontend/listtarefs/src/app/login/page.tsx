@@ -31,7 +31,17 @@ export default function User(){
             setName('');
             setPassword('');
 
-            router.push('/user/tarefas')
+            const userType = response.data.user.type;
+            if(userType === 'admin'){
+                router.push('/admin');
+                return;
+            } else if(userType === 'USER'){
+                router.push('/login/tarefas');
+                return;
+            } else {
+                setError('Usuario nao autorizado');
+                return;
+            }
         }
         catch(err){
             const error = err as AxiosError<{ message: string }>;
