@@ -12,13 +12,36 @@ router.get("/adduser", async (req, res) => {
   res.status(200).json({ users });
 });
 
+router.get("/users", async (req, res) => {
+  try{
+    const users = await prisma.user.findMany({
+      where: {
+        type: "USER"
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        type: true,
+      }
+    });
+    res.status(200).json({ users });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
+
 router.get("/adduser/:id", async (req, res) => {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        id: Number(req.params.id),
+        id: req.params.id
       },
     });
+      if (!user) {
+        return res.status(404).json({ message: "Usuario não encontrado" });
+      }
+      res.status(200).json({ user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -57,10 +80,10 @@ router.post("/login", async (req, res) => {
 
     const user = await prisma.user.findUnique({ where: { email } });
 
-    if (!user)
+    if (!user){
       return res.status(401).json({ message: "Usuario não encontrado" });
-
-    const isnameValid = user.name === name;
+    }
+    const isnameValid = user.name.trim().toLowerCase() === name.trim().toLowerCase();
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (isnameValid && isPasswordValid) {
@@ -90,18 +113,20 @@ router.post("/login", async (req, res) => {
 router.put("/addUser/:id", async (req, res) => {
   try {
     const { email, name, password, type } = req.body;
-    const hashPassword = await bcrypt.hash(password, 10);
+    const dataToUpdate = {
+      email,
+      name,
+      type,
+    }
+    if (password) {
+      dataToUpdate.password = await bcrypt.hash(password, 10);
+    }
 
     await prisma.user.update({
       where: {
-        id: Number(req.params.id),
+        id: req.params.id
       },
-      data: {
-        email: email,
-        name: name,
-        password: hashPassword,
-        type: type,
-      },
+      data: dataToUpdate
     });
     res.status(204).json({ message: "Usuario atualizado " });
   } catch (err) {
@@ -113,7 +138,7 @@ router.delete("/addUser/:id", async (req, res) => {
   try {
     await prisma.user.delete({
       where: {
-        id: Number(req.params.id),
+        id: req.params.id
       },
     });
     res.status(203).json({ message: "Usuario deletado" });

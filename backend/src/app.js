@@ -4,8 +4,8 @@ import { PrismaClient } from "@prisma/client";
 import dotenv from 'dotenv'
 import cors from 'cors'
 
-import mongoRoutes from "./routes/mongoRoutes.js";
-import prismaRoutes from "./routes/mysqlRoutes.js";
+import tarefs from "./routes/createTarefs.js";
+import user from "./routes/createUser.js";
 
 dotenv.config();
 
@@ -27,8 +27,8 @@ mongoose
     console.log("deu ruim ");
   });
 
-app.use('/ltf', mongoRoutes);
-app.use('/adU', prismaRoutes);
+app.use('/ltf', tarefs);
+app.use('/adU', user);
 
 
 app.listen(port, () => {

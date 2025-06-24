@@ -33,6 +33,17 @@ export default function Admin() {
   const inputEmailRef = useRef<HTMLInputElement>(null);
   const inputPasswordRef = useRef<HTMLInputElement>(null);
 
+  // Modal ADMIN
+
+  const [showAdminModal, setShowAdminModal] = useState(false);
+  const inputAdminNameRef = useRef<HTMLInputElement>(null);
+  const inputAdminEmailRef = useRef<HTMLInputElement>(null);
+  const inputAdminPasswordRef = useRef<HTMLInputElement>(null);
+  const [adminMensagem, setAdminMensagem] = useState<string>("");
+  const [adminLoading, setAdminLoading] = useState(false);
+
+  //
+
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
@@ -42,35 +53,34 @@ export default function Admin() {
   }, []);
 
   // Descomente se quiser proteger a rota com JWT
-  /*
+
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      router.push('/login');
+      router.push("/login");
       return;
     }
     try {
       const decoded = jwtDecode<JwtPayLoad>(token);
       const now = Date.now() / 1000;
       if (decoded.exp < now) {
-        localStorage.removeItem('token');
-        router.push('/login');
+        localStorage.removeItem("token");
+        router.push("/login");
         return;
       } else {
         setAuthorized(true);
         const msToExpire = (decoded.exp - now) * 1000;
         const timeout = setTimeout(() => {
-          localStorage.removeItem('token');
-          router.push('/login');
+          localStorage.removeItem("token");
+          router.push("/login");
         }, msToExpire);
         return () => clearTimeout(timeout);
       }
     } catch {
-      localStorage.removeItem('token');
-      router.push('/login');
+      localStorage.removeItem("token");
+      router.push("/login");
     }
   }, [router]);
-  */
 
   useEffect(() => {
     // Se for usar proteção, troque para if (!authorized) return;
@@ -84,6 +94,8 @@ export default function Admin() {
     };
     fetchUsers();
   }, []);
+
+  if (!authorized) return null;
 
   const handleLogout = () => {
     localStorage.clear();
@@ -122,10 +134,11 @@ export default function Admin() {
     if (!selectedUserId) return;
     setLoading(true);
     try {
+      const userToEdit = users.find((u) => u.id === selectedUserId);
       const data: any = {
         name: inputNameRef.current?.value,
         email: inputEmailRef.current?.value,
-        type: "USER",
+        type: userToEdit?.type || "USER", // Preserva o tipo do usuário
       };
       if (inputPasswordRef.current?.value) {
         data.password = inputPasswordRef.current.value;
@@ -164,8 +177,36 @@ export default function Admin() {
     }
   };
 
-  // Se for usar proteção, descomente:
-  // if (!authorized) return null;
+  const handleOpenAdminModal = () => {
+    setShowAdminModal(true);
+    setAdminMensagem("");
+    if (inputAdminNameRef.current) inputAdminNameRef.current.value = "";
+    if (inputAdminEmailRef.current) inputAdminEmailRef.current.value = "";
+    if (inputAdminPasswordRef.current) inputAdminPasswordRef.current.value = "";
+  };
+
+  const handleCreateAdmin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAdminLoading(true);
+    setAdminMensagem("");
+    try {
+      await api.post("/adU/user", {
+        name: inputAdminNameRef.current?.value,
+        email: inputAdminEmailRef.current?.value,
+        password: inputAdminPasswordRef.current?.value,
+        type: "ADMIN", // já definido
+      });
+      setAdminMensagem("Administrador criado com sucesso!");
+      setTimeout(() => {
+        setShowAdminModal(false);
+        setAdminMensagem("");
+      }, 1000);
+    } catch (err: any) {
+      setAdminMensagem("Erro ao criar administrador.");
+    } finally {
+      setAdminLoading(false);
+    }
+  };
 
   return (
     <div className="m-0 p-0 box-border bg-slate-200 min-h-screen flex flex-col items-center justify-start">
@@ -193,7 +234,7 @@ export default function Admin() {
           </button>
           <button
             className="bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-bold py-2 px-4 rounded-4xl transition-transform duration-300"
-            onClick={() => alert("Funcionalidade de novo administrador")}
+            onClick={handleOpenAdminModal}
           >
             Novo Administrador
           </button>
@@ -299,6 +340,59 @@ export default function Admin() {
             </form>
             {mensagem && <p className="mt-4 text-center">{mensagem}</p>}
             {loading && <p className="mt-2 text-center">Carregando...</p>}
+          </div>
+        </div>
+      )}
+      {showAdminModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-200 bg-opacity-10 z-50">
+          <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md relative flex flex-col items-center">
+            <button
+              onClick={() => setShowAdminModal(false)}
+              className="absolute top-2 right-4 text-2xl text-gray-500 hover:text-gray-700"
+              aria-label="Fechar"
+            >
+              ×
+            </button>
+            <h2 className="text-2xl font-bold mb-4 text-center">
+              Novo Administrador
+            </h2>
+            <form
+              onSubmit={handleCreateAdmin}
+              className="flex flex-col gap-4 w-full"
+            >
+              <input
+                ref={inputAdminNameRef}
+                type="text"
+                placeholder="Nome"
+                required
+                className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+              />
+              <input
+                ref={inputAdminEmailRef}
+                type="email"
+                placeholder="Email"
+                required
+                className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+              />
+              <input
+                ref={inputAdminPasswordRef}
+                type="password"
+                placeholder="Senha"
+                required
+                className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+              />
+              <button
+                type="submit"
+                className="bg-green-600 text-white px-4 py-2 rounded-4xl font-bold hover:bg-green-700 transition"
+                disabled={adminLoading}
+              >
+                {adminLoading ? "Salvando..." : "Criar"}
+              </button>
+            </form>
+            {adminMensagem && (
+              <p className="mt-4 text-center">{adminMensagem}</p>
+            )}
+            {adminLoading && <p className="mt-2 text-center">Carregando...</p>}
           </div>
         </div>
       )}

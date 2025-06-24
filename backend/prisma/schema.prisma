@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -19,7 +19,7 @@ enum UserType {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
   email    String  @unique
   name     String?
   password String?

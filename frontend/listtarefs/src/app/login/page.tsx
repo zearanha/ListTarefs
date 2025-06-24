@@ -26,13 +26,14 @@ export default function User(){
         try{
             const response = await api.post('/adU/login', {email, name, password});
             localStorage.setItem('token', response.data.token);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
             setSuccess('Login successful');
             setEmail('');
             setName('');
             setPassword('');
 
             const userType = response.data.user.type;
-            if(userType === 'admin'){
+            if(userType === 'ADMIN'){
                 router.push('/admin');
                 return;
             } else if(userType === 'USER'){
@@ -42,6 +43,7 @@ export default function User(){
                 setError('Usuario nao autorizado');
                 return;
             }
+
         }
         catch(err){
             const error = err as AxiosError<{ message: string }>;
