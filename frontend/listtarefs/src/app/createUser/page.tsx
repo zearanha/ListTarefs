@@ -35,12 +35,12 @@ export default function CreateUser() {
           password: inputPasswordRef.current,
         };
 
-        for (const key in inputs) {
-          const input = inputs[key as keyof HTMLInputElements];
-          if (input) {
-            input.value = "";
+        (Object.keys(inputs) as Array<keyof HTMLInputElements>).forEach(
+          (key) => {
+            const input = inputs[key];
+            if (input) input.value = "";
           }
-        }
+        );
         setMensagem("Usuário cadastrado com sucesso!");
       } else {
         setMensagem(
@@ -50,17 +50,18 @@ export default function CreateUser() {
         );
       }
     } catch (error: unknown) {
-      if (isAxiosError(error)) {
-        setMensagem(
-          `Erro ao registrar utilizador: ${
-            (error.response?.data && typeof (error.response.data as any).message === "string"
-              ? (error.response.data as any).message
-              : error.message) || "Erro desconhecido"
-          }`
-        );
-      } else {
-        setMensagem("Erro ao registrar utilizador: erro desconhecido");
-      }
+        if (isAxiosError(error)) {
+          const apiMessage =
+            error.response?.data &&
+            typeof (error.response.data as { message?: unknown }).message === "string"
+              ? (error.response.data as { message: string }).message
+              : error.message;
+          setMensagem(
+            `Erro ao registrar utilizador: ${apiMessage || "Erro desconhecido"}`
+          );
+        } else {
+          setMensagem("Erro ao registrar utilizador: erro desconhecido");
+        }
     }
   };
 

@@ -3,9 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "../../service/api";
 
-type JwtPayLoad = {
-  exp: number;
-};
 
 type User = {
   id: number;
@@ -18,7 +15,6 @@ export default function Admin() {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
-  const [userName, setUserName] = useState<string | null>(null);
 
   // Modal states
   const [showModal, setShowModal] = useState(false);
