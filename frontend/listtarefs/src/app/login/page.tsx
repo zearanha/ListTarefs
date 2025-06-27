@@ -82,7 +82,7 @@ export default function User() {
         />
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded-2xl font-bold hover:bg-blue-700 transition w-full"
+          className="bg-blue-600 text-white px-4 py-2 rounded-2xl font-bold hover:bg-blue-700 transition w-full cursor-pointer"
         >
           Entrar
         </button>

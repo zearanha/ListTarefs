@@ -158,7 +158,7 @@ export default function Tarefs() {
 
   // Deletar Tarefa
   const deleteTaref = async (tarefa: Tarefa) => {
-    if (confirm("tem certeza que deseja excluir esta tarefa?")) {
+    if (confirm("Você concluiu a tarefa?")) {
       try {
         await api.delete(`/ltf/listTarefs/${tarefa._id}`, {
           data: { userId: tarefa.userId },
@@ -188,15 +188,15 @@ export default function Tarefs() {
             Bem-vindo, <span className="text-blue-600">{userName}</span>
           </p>
         )}
-        <nav className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-6 sm:mb-8 w-full max-w-xs sm:max-w-none">
+        <nav className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-6 sm:mb-8">
           <button
-            className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl transition-transform duration-300 w-full sm:w-auto"
+            className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl transition-transform duration-300"
             onClick={() => setShowForm(!showForm)}
           >
             {showForm ? "Cancelar" : "Adicionar tarefa"}
           </button>
           <button
-            className="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 text-gray-800 font-bold py-2 px-4 rounded-2xl transition-transform duration-300 w-full sm:w-auto"
+            className="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 text-gray-800 font-bold py-2 px-4 rounded-2xl transition-transform duration-300"
             onClick={exitLogin}
           >
             Sair
@@ -204,7 +204,10 @@ export default function Tarefs() {
         </nav>
         <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-3 sm:p-6">
           {showForm && (
-            <form onSubmit={newTaref} className="flex flex-col gap-3 sm:gap-4 mb-6">
+            <form
+              onSubmit={newTaref}
+              className="flex flex-col gap-3 sm:gap-4 mb-6"
+            >
               <input
                 type="text"
                 placeholder="Tarefa"
@@ -300,25 +303,46 @@ export default function Tarefs() {
               <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">
                 Editar Tarefa
               </h2>
-              <form onSubmit={atualizarTarefa} className="flex flex-col gap-3 sm:gap-4 w-full">
+              <form
+                onSubmit={atualizarTarefa}
+                className="flex flex-col gap-3 sm:gap-4 w-full"
+              >
                 <input
                   type="text"
                   value={editTarefa?.tarefa || ""}
-                  onChange={e => setEditTarefa(editTarefa ? { ...editTarefa, tarefa: e.target.value } : null)}
+                  onChange={(e) =>
+                    setEditTarefa(
+                      editTarefa
+                        ? { ...editTarefa, tarefa: e.target.value }
+                        : null
+                    )
+                  }
                   required
                   className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
                 />
                 <input
                   type="date"
                   value={editTarefa?.dataInicio?.slice(0, 10) || ""}
-                  onChange={e => setEditTarefa(editTarefa ? { ...editTarefa, dataInicio: e.target.value } : null)}
+                  onChange={(e) =>
+                    setEditTarefa(
+                      editTarefa
+                        ? { ...editTarefa, dataInicio: e.target.value }
+                        : null
+                    )
+                  }
                   required
                   className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
                 />
                 <input
                   type="date"
                   value={editTarefa?.dataFim?.slice(0, 10) || ""}
-                  onChange={e => setEditTarefa(editTarefa ? { ...editTarefa, dataFim: e.target.value } : null)}
+                  onChange={(e) =>
+                    setEditTarefa(
+                      editTarefa
+                        ? { ...editTarefa, dataFim: e.target.value }
+                        : null
+                    )
+                  }
                   required
                   className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
                 />
@@ -330,7 +354,9 @@ export default function Tarefs() {
                   {loading ? "Salvando..." : "Salvar"}
                 </button>
               </form>
-              {mensagem && <p className="mt-4 text-center text-sm">{mensagem}</p>}
+              {mensagem && (
+                <p className="mt-4 text-center text-sm">{mensagem}</p>
+              )}
             </div>
           </div>
         )}
