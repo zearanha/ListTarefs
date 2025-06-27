@@ -210,30 +210,30 @@ export default function Admin() {
 
   return (
     <div className="m-0 p-0 box-border bg-slate-200 min-h-screen flex flex-col items-center justify-start">
-      <div className="w-full flex flex-col items-center mt-10">
-        <h1 className="text-4xl font-extrabold mb-2 text-center">
+      <div className="w-full flex flex-col items-center mt-6 sm:mt-10 px-2">
+        <h1 className="text-3xl sm:text-4xl font-extrabold mb-2 text-center">
           Painel do Administrador
         </h1>
         {userName && (
-          <p className="text-lg font-semibold mb-6 text-center">
+          <p className="text-base sm:text-lg font-semibold mb-6 text-center">
             Bem-vindo, <span className="text-blue-600">{userName}</span>
           </p>
         )}
-        <nav className="flex gap-4 mb-8">
+        <nav className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-6 sm:mb-8 w-full max-w-xs sm:max-w-none">
           <button
-            className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold py-2 px-4 rounded-4xl transition-transform duration-300"
+            className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl transition-transform duration-300 w-full sm:w-auto"
             onClick={() => router.push("/admin")}
           >
             Lista de Usuários
           </button>
           <button
-            className="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 text-gray-800 font-bold py-2 px-4 rounded-4xl transition-transform duration-300"
+            className="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 text-gray-800 font-bold py-2 px-4 rounded-2xl transition-transform duration-300 w-full sm:w-auto"
             onClick={() => router.push("/createUser")}
           >
             Adicionar Usuário
           </button>
           <button
-            className="bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-bold py-2 px-4 rounded-4xl transition-transform duration-300"
+            className="bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-bold py-2 px-4 rounded-2xl transition-transform duration-300 w-full sm:w-auto"
             onClick={handleOpenAdminModal}
           >
             Novo Administrador
@@ -241,41 +241,41 @@ export default function Admin() {
         </nav>
         <button
           onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold py-2 px-6 rounded-4xl transition-transform duration-300 mb-8"
+          className="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold py-2 px-6 rounded-2xl transition-transform duration-300 mb-8 w-full sm:w-auto"
         >
           Sair
         </button>
-        <div className="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-6">
-          <h2 className="text-2xl font-bold mb-4 text-center">
+        <div className="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-3 sm:p-6">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">
             Lista de Usuários
           </h2>
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-white rounded shadow">
+            <table className="min-w-full bg-white rounded shadow text-xs sm:text-base">
               <thead>
                 <tr>
-                  <th className="py-2 px-4">ID</th>
-                  <th className="py-2 px-4">Nome</th>
-                  <th className="py-2 px-4">Email</th>
-                  <th className="py-2 px-4">Tipo</th>
-                  <th className="py-2 px-4">Ações</th>
+                  <th className="py-2 px-2 sm:px-4">ID</th>
+                  <th className="py-2 px-2 sm:px-4">Nome</th>
+                  <th className="py-2 px-2 sm:px-4">Email</th>
+                  <th className="py-2 px-2 sm:px-4">Tipo</th>
+                  <th className="py-2 px-2 sm:px-4">Ações</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id} className="border-t">
-                    <td className="py-2 px-4">{user.id}</td>
-                    <td className="py-2 px-4">{user.name}</td>
-                    <td className="py-2 px-4">{user.email}</td>
-                    <td className="py-2 px-4">{user.type}</td>
-                    <td className="py-2 px-4 flex gap-2">
+                    <td className="py-2 px-2 sm:px-4">{user.id}</td>
+                    <td className="py-2 px-2 sm:px-4">{user.name}</td>
+                    <td className="py-2 px-2 sm:px-4">{user.email}</td>
+                    <td className="py-2 px-2 sm:px-4">{user.type}</td>
+                    <td className="py-2 px-2 sm:px-4 flex flex-col sm:flex-row gap-2">
                       <button
-                        className="bg-blue-500 text-white px-3 py-1 rounded-4xl hover:bg-blue-600 transition"
+                        className="bg-blue-500 text-white px-3 py-1 rounded-2xl hover:bg-blue-600 transition text-xs"
                         onClick={() => handleEdit(user.id)}
                       >
                         Editar
                       </button>
                       <button
-                        className="bg-red-500 text-white px-3 py-1 rounded-4xl hover:bg-red-600 transition"
+                        className="bg-red-500 text-white px-3 py-1 rounded-2xl hover:bg-red-600 transition text-xs"
                         onClick={() => handleDelete(user.id)}
                       >
                         Excluir
@@ -287,7 +287,7 @@ export default function Admin() {
             </table>
           </div>
           {mensagem && (
-            <p className="mt-4 text-center text-red-500">{mensagem}</p>
+            <p className="mt-4 text-center text-red-500 text-sm">{mensagem}</p>
           )}
         </div>
       </div>
@@ -295,7 +295,7 @@ export default function Admin() {
       {/* Modal de edição */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
-          <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md relative flex flex-col items-center">
+          <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-8 w-full max-w-xs sm:max-w-md relative flex flex-col items-center">
             <button
               onClick={handleCloseModal}
               className="absolute top-2 right-4 text-2xl text-gray-500 hover:text-gray-700"
@@ -303,49 +303,51 @@ export default function Admin() {
             >
               ×
             </button>
-            <h2 className="text-2xl font-bold mb-4 text-center">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">
               Editar Usuário
             </h2>
             <form
               onSubmit={handleUpdate}
-              className="flex flex-col gap-4 w-full"
+              className="flex flex-col gap-3 sm:gap-4 w-full"
             >
               <input
                 ref={inputNameRef}
                 type="text"
                 placeholder="Nome"
                 required
-                className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+                className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
               />
               <input
                 ref={inputEmailRef}
                 type="email"
                 placeholder="Email"
                 required
-                className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+                className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
               />
               <input
                 ref={inputPasswordRef}
                 type="password"
                 placeholder="Nova senha (opcional)"
-                className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+                className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
               />
               <button
                 type="submit"
-                className="bg-blue-600 text-white px-4 py-2 rounded-4xl font-bold hover:bg-blue-700 transition"
+                className="bg-blue-600 text-white px-4 py-2 rounded-2xl font-bold hover:bg-blue-700 transition text-sm"
                 disabled={loading}
               >
                 {loading ? "Salvando..." : "Salvar"}
               </button>
             </form>
-            {mensagem && <p className="mt-4 text-center">{mensagem}</p>}
-            {loading && <p className="mt-2 text-center">Carregando...</p>}
+            {mensagem && <p className="mt-4 text-center text-sm">{mensagem}</p>}
+            {loading && (
+              <p className="mt-2 text-center text-sm">Carregando...</p>
+            )}
           </div>
         </div>
       )}
       {showAdminModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-200 bg-opacity-10 z-50">
-          <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md relative flex flex-col items-center">
+          <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-8 w-full max-w-xs sm:max-w-md relative flex flex-col items-center">
             <button
               onClick={() => setShowAdminModal(false)}
               className="absolute top-2 right-4 text-2xl text-gray-500 hover:text-gray-700"
@@ -353,46 +355,48 @@ export default function Admin() {
             >
               ×
             </button>
-            <h2 className="text-2xl font-bold mb-4 text-center">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">
               Novo Administrador
             </h2>
             <form
               onSubmit={handleCreateAdmin}
-              className="flex flex-col gap-4 w-full"
+              className="flex flex-col gap-3 sm:gap-4 w-full"
             >
               <input
                 ref={inputAdminNameRef}
                 type="text"
                 placeholder="Nome"
                 required
-                className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+                className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
               />
               <input
                 ref={inputAdminEmailRef}
                 type="email"
                 placeholder="Email"
                 required
-                className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+                className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
               />
               <input
                 ref={inputAdminPasswordRef}
                 type="password"
                 placeholder="Senha"
                 required
-                className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+                className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
               />
               <button
                 type="submit"
-                className="bg-green-600 text-white px-4 py-2 rounded-4xl font-bold hover:bg-green-700 transition"
+                className="bg-green-600 text-white px-4 py-2 rounded-2xl font-bold hover:bg-green-700 transition text-sm"
                 disabled={adminLoading}
               >
                 {adminLoading ? "Salvando..." : "Criar"}
               </button>
             </form>
             {adminMensagem && (
-              <p className="mt-4 text-center">{adminMensagem}</p>
+              <p className="mt-4 text-center text-sm">{adminMensagem}</p>
             )}
-            {adminLoading && <p className="mt-2 text-center">Carregando...</p>}
+            {adminLoading && (
+              <p className="mt-2 text-center text-sm">Carregando...</p>
+            )}
           </div>
         </div>
       )}

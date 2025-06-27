@@ -175,32 +175,32 @@ export default function Tarefs() {
   //
   return (
     <div className="m-0 p-0 box-border bg-slate-200 min-h-screen flex flex-col items-center justify-start">
-      <div className="w-full flex flex-col items-center mt-10">
-        <h1 className="text-4xl font-extrabold mb-2 text-center">
+      <div className="w-full flex flex-col items-center mt-6 sm:mt-10 px-2">
+        <h1 className="text-3xl sm:text-4xl font-extrabold mb-2 text-center">
           Lista de Tarefas
         </h1>
         {userName && (
-          <p className="text-lg font-semibold mb-6 text-center">
+          <p className="text-base sm:text-lg font-semibold mb-6 text-center">
             Bem-vindo, <span className="text-blue-600">{userName}</span>
           </p>
         )}
-        <nav className="flex gap-4 mb-8">
+        <nav className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-6 sm:mb-8 w-full max-w-xs sm:max-w-none">
           <button
-            className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold py-2 px-4 rounded-4xl transition-transform duration-300"
+            className="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl transition-transform duration-300 w-full sm:w-auto"
             onClick={() => setShowForm(!showForm)}
           >
             {showForm ? "Cancelar" : "Adicionar tarefa"}
           </button>
           <button
-            className="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 text-gray-800 font-bold py-2 px-4 rounded-4xl transition-transform duration-300"
+            className="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 text-gray-800 font-bold py-2 px-4 rounded-2xl transition-transform duration-300 w-full sm:w-auto"
             onClick={exitLogin}
           >
             Sair
           </button>
         </nav>
-        <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-6">
+        <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-3 sm:p-6">
           {showForm && (
-            <form onSubmit={newTaref} className="flex flex-col gap-4 mb-6">
+            <form onSubmit={newTaref} className="flex flex-col gap-3 sm:gap-4 mb-6">
               <input
                 type="text"
                 placeholder="Tarefa"
@@ -209,7 +209,7 @@ export default function Tarefs() {
                   setNovaTarefa({ ...novaTarefa, tarefa: e.target.value })
                 }
                 required
-                className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+                className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
               />
               <input
                 type="date"
@@ -218,7 +218,7 @@ export default function Tarefs() {
                   setNovaTarefa({ ...novaTarefa, dataInicio: e.target.value })
                 }
                 required
-                className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+                className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
               />
               <input
                 type="date"
@@ -227,11 +227,11 @@ export default function Tarefs() {
                   setNovaTarefa({ ...novaTarefa, dataFim: e.target.value })
                 }
                 required
-                className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+                className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
               />
               <button
                 type="submit"
-                className="bg-green-600 text-white px-4 py-2 rounded-4xl font-bold hover:bg-green-700 transition"
+                className="bg-green-600 text-white px-4 py-2 rounded-2xl font-bold hover:bg-green-700 transition text-sm"
               >
                 Salvar
               </button>
@@ -239,37 +239,37 @@ export default function Tarefs() {
           )}
           {tarefas.length > 0 ? (
             <div className="overflow-x-auto">
-              <table className="min-w-full bg-white rounded shadow">
+              <table className="min-w-full bg-white rounded shadow text-xs sm:text-base">
                 <thead>
                   <tr>
-                    <th className="py-2 px-4">Tarefa</th>
-                    <th className="py-2 px-4">Data Início</th>
-                    <th className="py-2 px-4">Data Fim</th>
-                    <th className="py-2 px-4">Ações</th>
+                    <th className="py-2 px-2 sm:px-4">Tarefa</th>
+                    <th className="py-2 px-2 sm:px-4">Data Início</th>
+                    <th className="py-2 px-2 sm:px-4">Data Fim</th>
+                    <th className="py-2 px-2 sm:px-4">Ações</th>
                   </tr>
                 </thead>
                 <tbody>
                   {tarefas.map((tarefa) => (
                     <tr key={tarefa._id} className="border-t">
-                      <td className="py-2 px-4">{tarefa.tarefa}</td>
-                      <td className="py-2 px-4">
+                      <td className="py-2 px-2 sm:px-4">{tarefa.tarefa}</td>
+                      <td className="py-2 px-2 sm:px-4">
                         {new Date(tarefa.dataInicio).toLocaleDateString()}
                       </td>
-                      <td className="py-2 px-4">
+                      <td className="py-2 px-2 sm:px-4">
                         {new Date(tarefa.dataFim).toLocaleDateString()}
                       </td>
-                      <td className="py-2 px-4 flex gap-2">
+                      <td className="py-2 px-2 sm:px-4 flex flex-col sm:flex-row gap-2">
                         <button
-                          className="bg-blue-500 text-white px-3 py-1 rounded-4xl hover:bg-blue-600 transition"
+                          className="bg-blue-500 text-white px-3 py-1 rounded-2xl hover:bg-blue-600 transition text-xs"
                           onClick={() => edit(tarefa)}
                         >
                           Editar
                         </button>
                         <button
-                          className="bg-red-500 text-white px-3 py-1 rounded-4xl hover:bg-red-600 transition"
+                          className="bg-red-500 text-white px-3 py-1 rounded-2xl hover:bg-red-600 transition text-xs"
                           onClick={() => deleteTaref(tarefa)}
                         >
-                          Excluir
+                          Feita
                         </button>
                       </td>
                     </tr>
@@ -278,58 +278,58 @@ export default function Tarefs() {
               </table>
             </div>
           ) : (
-            <p className="text-center text-gray-500 mt-4">
+            <p className="text-center text-gray-500 mt-4 text-sm">
               Nenhuma tarefa cadastrada.
             </p>
           )}
         </div>
         {showEditModal && (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
-        <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md relative flex flex-col items-center">
-            <button
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+            <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-8 w-full max-w-xs sm:max-w-md relative flex flex-col items-center">
+              <button
                 onClick={() => setShowEditModal(false)}
                 className="absolute top-2 right-4 text-2xl text-gray-500 hover:text-gray-700"
                 aria-label="Fechar"
-            >
+              >
                 ×
-            </button>
-            <h2 className="text-2xl font-bold mb-4 text-center">
+              </button>
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-center">
                 Editar Tarefa
-            </h2>
-            <form onSubmit={atualizarTarefa} className="flex flex-col gap-4 w-full">
+              </h2>
+              <form onSubmit={atualizarTarefa} className="flex flex-col gap-3 sm:gap-4 w-full">
                 <input
-                    type="text"
-                    value={editTarefa?.tarefa || ""}
-                    onChange={e => setEditTarefa({ ...editTarefa, tarefa: e.target.value })}
-                    required
-                    className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+                  type="text"
+                  value={editTarefa?.tarefa || ""}
+                  onChange={e => setEditTarefa({ ...editTarefa, tarefa: e.target.value })}
+                  required
+                  className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
                 />
                 <input
-                    type="date"
-                    value={editTarefa?.dataInicio?.slice(0,10) || ""}
-                    onChange={e => setEditTarefa({ ...editTarefa, dataInicio: e.target.value })}
-                    required
-                    className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+                  type="date"
+                  value={editTarefa?.dataInicio?.slice(0, 10) || ""}
+                  onChange={e => setEditTarefa({ ...editTarefa, dataInicio: e.target.value })}
+                  required
+                  className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
                 />
                 <input
-                    type="date"
-                    value={editTarefa?.dataFim?.slice(0,10) || ""}
-                    onChange={e => setEditTarefa({ ...editTarefa, dataFim: e.target.value })}
-                    required
-                    className="bg-gray-200 px-4 py-2 rounded-4xl outline-none"
+                  type="date"
+                  value={editTarefa?.dataFim?.slice(0, 10) || ""}
+                  onChange={e => setEditTarefa({ ...editTarefa, dataFim: e.target.value })}
+                  required
+                  className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
                 />
                 <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-4xl font-bold hover:bg-blue-700 transition"
-                    disabled={loading}
+                  type="submit"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-2xl font-bold hover:bg-blue-700 transition text-sm"
+                  disabled={loading}
                 >
-                    {loading ? "Salvando..." : "Salvar"}
+                  {loading ? "Salvando..." : "Salvar"}
                 </button>
-            </form>
-            {mensagem && <p className="mt-4 text-center">{mensagem}</p>}
-        </div>
-    </div>
-)}
+              </form>
+              {mensagem && <p className="mt-4 text-center text-sm">{mensagem}</p>}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

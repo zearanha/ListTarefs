@@ -1,73 +1,97 @@
-'use client'
+"use client";
 
-import Button from '../../components/button'
-import { useState } from 'react';
-import api from '../../service/api';
-import { AxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
+import Button from "../../components/button";
+import { useState } from "react";
+import api from "../../service/api";
+import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
+export default function User() {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const router = useRouter();
 
-export default function User(){
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [success, setSuccess] =useState('');
-    const router = useRouter();
-
-    const handleLogin = async(e: React.FormEvent) =>{
-        e.preventDefault();
-        setError('');
-        setSuccess('');
-        if(!email || !name || !password){
-            setError('All fields are required');
-            return;
-        }
-        try{
-            const response = await api.post('/adU/login', {email, name, password});
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-            setSuccess('Login successful');
-            setEmail('');
-            setName('');
-            setPassword('');
-
-            const userType = response.data.user.type;
-            if(userType === 'ADMIN'){
-                router.push('/admin');
-                return;
-            } else if(userType === 'USER'){
-                router.push('/login/tarefas');
-                return;
-            } else {
-                setError('Usuario nao autorizado');
-                return;
-            }
-
-        }
-        catch(err){
-            const error = err as AxiosError<{ message: string }>;
-            if(error.response && error.response.data){
-                setError(error.response.data.message);
-            } else{
-                setError('Erro ao conectar com o servidor');
-            }
-        }
-
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    if (!email || !name || !password) {
+      setError("All fields are required");
+      return;
     }
-    return(
-        <div className='m-0 p-0 box-border bg-slate-200 min-h-screen flex justify-center items-center'>
-            <form onSubmit={handleLogin} className='flex justify-center items-center flex-col w-full rounded-2xl shadow-lg max-w-md p-8'>
-                <h1 className='text-4xl font-bold mb-4'>Login</h1>
-                <div>
-                    <input className='bg-gray-300 outline-none border-none rounded-md p-2 mb-4 w-full' type="email" placeholder='Email' required value={email} onChange={e => setEmail(e.target.value)}/>
-                    <input className='bg-gray-300 outline-none border-none rounded-md p-2 mb-4 w-full' type="text" placeholder='Name' required value={name} onChange={e => setName(e.target.value)}/>
-                    <input className='bg-gray-300 outline-none border-none rounded-md p-2 mb-4 w-full' type="password" placeholder='Password' required value={password} onChange={e => setPassword(e.target.value)}/>
-                </div>
-                <Button type='submit'>Login</Button>
-                {error && <div className='text-red-500 mt-2'>{error}</div>}
-                {success && <div className='text-green-500 mt-2'>{success}</div>}
-            </form>
+    try {
+      const response = await api.post("/adU/login", { email, name, password });
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      setSuccess("Login successful");
+      setEmail("");
+      setName("");
+      setPassword("");
+
+      const userType = response.data.user.type;
+      if (userType === "ADMIN") {
+        router.push("/admin");
+        return;
+      } else if (userType === "USER") {
+        router.push("/login/tarefas");
+        return;
+      } else {
+        setError("Usuario nao autorizado");
+        return;
+      }
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      if (error.response && error.response.data) {
+        setError(error.response.data.message);
+      } else {
+        setError("Erro ao conectar com o servidor");
+      }
+    }
+  };
+  return (
+    <div className="m-0 p-0 box-border bg-slate-200 min-h-screen flex justify-center items-center px-2">
+      <form
+        onSubmit={handleLogin}
+        className="flex justify-center items-center flex-col w-full rounded-2xl shadow-lg max-w-md p-4 sm:p-8"
+      >
+        <h1 className="text-3xl sm:text-4xl font-bold mb-4">Login</h1>
+        <div className="w-full">
+          <input
+            className="bg-gray-300 outline-none border-none rounded-md p-2 mb-4 w-full text-sm"
+            type="email"
+            placeholder="Email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            className="bg-gray-300 outline-none border-none rounded-md p-2 mb-4 w-full text-sm"
+            type="text"
+            placeholder="Name"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            className="bg-gray-300 outline-none border-none rounded-md p-2 mb-4 w-full text-sm"
+            type="password"
+            placeholder="Password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
-    )
+        <Button type="submit" className="w-full sm:w-auto">
+          Login
+        </Button>
+        {error && <div className="text-red-500 mt-2 text-sm">{error}</div>}
+        {success && (
+          <div className="text-green-500 mt-2 text-sm">{success}</div>
+        )}
+      </form>
+    </div>
+  );
 }
