@@ -15,7 +15,8 @@ router.get("/listTarefs", async (req, res) => {
 
 router.get("/listTarefs/user/:userId", async (req, res) => {
   try {
-    const listers = await listTarefs.findById({ userId: req.params.userId });
+    const listers = await listTarefs.find({ userId: req.params.userId });
+    return res.status(200).json(listers);
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
