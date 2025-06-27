@@ -1,12 +1,19 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import api from "../../../service/api";
-import { data } from "react-router-dom";
 
 type JwtPayLoad = {
   exp: number;
+};
+
+type Tarefa = {
+  _id: string;
+  tarefa: string;
+  dataInicio: string;
+  dataFim: string;
+  userId: string;
 };
 
 export default function Tarefs() {
@@ -17,7 +24,7 @@ export default function Tarefs() {
   const [userName, setUserName] = useState<string | null>(null);
 
   // Estado para armazenar as tarefas
-  const [tarefas, setTarefas] = useState<any[]>([]);
+  const [tarefas, setTarefas] = useState<Tarefa[]>([]);
 
   // Adicionando uma tarefa
   const [showForm, setShowForm] = useState(false);
@@ -29,14 +36,13 @@ export default function Tarefs() {
 
   // Modal de edição de tarefas
   const [showEditModal, setShowEditModal] = useState(false);
-  const [editTarefa, setEditTarefa] = useState<any>(null);
+  const [editTarefa, setEditTarefa] = useState<Tarefa | null>(null);
   const [loading, setLoading] = useState(false);
   const [mensagem, setMensagem] = useState("");
 
   // Verifica se o token é válido e se não expirou
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log("Token:", token);
     if (!token) {
       router.push("/login");
       return;
@@ -81,7 +87,7 @@ export default function Tarefs() {
         const userData = JSON.parse(user);
         const response = await api.get(`/ltf/listTarefs/user/${userData.id}`);
         setTarefas(response.data);
-      } catch (error) {
+      } catch {
         setTarefas([]);
       }
     };
@@ -110,14 +116,13 @@ export default function Tarefs() {
       setShowForm(false); // Atualiza a lista após adicionar uma tarefa
       const response = await api.get(`/ltf/listTarefs/user/${userData.id}`);
       setTarefas(response.data);
-    } catch (err) {
+    } catch {
       alert("Erro ao adicionar tarefa");
     }
   };
 
   // Editar tarefa
-
-  const edit = (tarefa: any) => {
+  const edit = (tarefa: Tarefa) => {
     setEditTarefa({ ...tarefa });
     setShowEditModal(true);
     setMensagem("");
@@ -144,7 +149,7 @@ export default function Tarefs() {
         const response = await api.get(`/ltf/listTarefs/user/${userData.id}`);
         setTarefas(response.data);
       }
-    } catch (err) {
+    } catch {
       setMensagem("Erro ao atualizar tarefa");
     } finally {
       setLoading(false);
@@ -152,15 +157,14 @@ export default function Tarefs() {
   };
 
   // Deletar Tarefa
-
-  const deleteTaref = async (tarefa: any) => {
+  const deleteTaref = async (tarefa: Tarefa) => {
     if (confirm("tem certeza que deseja excluir esta tarefa?")) {
       try {
         await api.delete(`/ltf/listTarefs/${tarefa._id}`, {
           data: { userId: tarefa.userId },
         });
         setTarefas(tarefas.filter((t) => t._id !== tarefa._id));
-      } catch (err) {
+      } catch {
         alert("Erro ao excluir");
       }
     }
@@ -300,21 +304,21 @@ export default function Tarefs() {
                 <input
                   type="text"
                   value={editTarefa?.tarefa || ""}
-                  onChange={e => setEditTarefa({ ...editTarefa, tarefa: e.target.value })}
+                  onChange={e => setEditTarefa(editTarefa ? { ...editTarefa, tarefa: e.target.value } : null)}
                   required
                   className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
                 />
                 <input
                   type="date"
                   value={editTarefa?.dataInicio?.slice(0, 10) || ""}
-                  onChange={e => setEditTarefa({ ...editTarefa, dataInicio: e.target.value })}
+                  onChange={e => setEditTarefa(editTarefa ? { ...editTarefa, dataInicio: e.target.value } : null)}
                   required
                   className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
                 />
                 <input
                   type="date"
                   value={editTarefa?.dataFim?.slice(0, 10) || ""}
-                  onChange={e => setEditTarefa({ ...editTarefa, dataFim: e.target.value })}
+                  onChange={e => setEditTarefa(editTarefa ? { ...editTarefa, dataFim: e.target.value } : null)}
                   required
                   className="bg-gray-200 px-4 py-2 rounded-2xl outline-none text-sm"
                 />

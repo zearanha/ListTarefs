@@ -1,10 +1,7 @@
 "use client";
-
-import axios, { AxiosError } from "axios";
-import Button from "../../components/button";
+import React, { useRef, useState } from "react";
 import api from "../../service/api";
-import { useRef } from "react";
-import { useState } from "react";
+import axios, { AxiosError } from "axios";
 
 interface HTMLInputElements {
   name: HTMLInputElement | null;
@@ -16,7 +13,7 @@ export default function CreateUser() {
   const inputNameRef = useRef<HTMLInputElement>(null);
   const inputEmailRef = useRef<HTMLInputElement>(null);
   const inputPasswordRef = useRef<HTMLInputElement>(null);
-  const [menssagem, setMensagem] = useState<string>("");
+  const [mensagem, setMensagem] = useState<string>("");
 
   const isAxiosError = (error: unknown): error is AxiosError => {
     return axios.isAxiosError(error);
@@ -52,56 +49,60 @@ export default function CreateUser() {
           }`
         );
       }
-
-      console.log(response);
     } catch (error: unknown) {
       if (isAxiosError(error)) {
         setMensagem(
           `Erro ao registrar utilizador: ${
-            error.response?.data || error.message || "Erro desconhecido"
+            (error.response?.data && typeof (error.response.data as any).message === "string"
+              ? (error.response.data as any).message
+              : error.message) || "Erro desconhecido"
           }`
         );
-        console.error("Erro ao registrar utilizador", error);
       } else {
         setMensagem("Erro ao registrar utilizador: erro desconhecido");
-        console.error("Erro ao registrar utilizador", error);
       }
     }
   };
 
   return (
     <div className="m-0 p-0 box-border bg-slate-200 min-h-screen flex justify-center items-center px-2">
-      <div className="flex justify-center items-center flex-col w-full rounded-2xl shadow-lg max-w-md p-4 sm:p-8">
-        <div className="flex justify-center items-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Cadastre-se</h2>
-        </div>
-        <div className="flex flex-col justify-center items-center gap-y-3 mb-5 w-full">
-          <input
-            ref={inputNameRef}
-            className="bg-gray-300 px-4 py-1 rounded-2xl outline-none w-full text-sm"
-            type="text"
-            placeholder="name"
-          />
-          <input
-            ref={inputEmailRef}
-            className="bg-gray-300 px-4 py-1 rounded-2xl outline-none w-full text-sm"
-            type="email"
-            placeholder="email"
-          />
-          <input
-            ref={inputPasswordRef}
-            className="bg-gray-300 px-4 py-1 rounded-2xl outline-none w-full text-sm"
-            type="password"
-            placeholder="password"
-          />
-        </div>
-        {menssagem && <p className="mb-4 text-center text-sm">{menssagem}</p>}
-        <div className="w-full">
-          <Button onClick={registerNewuser} className="w-full sm:w-auto">
-            Cadastrar
-          </Button>
-        </div>
-      </div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          registerNewuser();
+        }}
+        className="flex flex-col w-full max-w-md bg-white rounded-2xl shadow-lg p-4 sm:p-8"
+      >
+        <h1 className="text-2xl font-bold mb-4">Criar Usuário</h1>
+        <input
+          type="text"
+          placeholder="Nome"
+          ref={inputNameRef}
+          className="mb-2 px-4 py-2 rounded-2xl border border-gray-300 outline-none"
+          required
+        />
+        <input
+          type="email"
+          placeholder="E-mail"
+          ref={inputEmailRef}
+          className="mb-2 px-4 py-2 rounded-2xl border border-gray-300 outline-none"
+          required
+        />
+        <input
+          type="password"
+          placeholder="Senha"
+          ref={inputPasswordRef}
+          className="mb-2 px-4 py-2 rounded-2xl border border-gray-300 outline-none"
+          required
+        />
+        <button
+          type="submit"
+          className="bg-green-600 text-white px-4 py-2 rounded-2xl font-bold hover:bg-green-700 transition"
+        >
+          Cadastrar
+        </button>
+        {mensagem && <p className="mt-2 text-center">{mensagem}</p>}
+      </form>
     </div>
   );
 }
