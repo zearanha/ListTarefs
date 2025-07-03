@@ -64,7 +64,7 @@ router.post("/user", async (req, res) => {
         type: type,
       },
     });
-    res.status(201).json({ message: "User criado" });
+    return res.status(201).json({ message: "User criado" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
